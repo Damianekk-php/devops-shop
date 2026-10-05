@@ -16,7 +16,7 @@ final class Product
     {
         $conditions = ['p.stock >= 0'];
         $params = [];
-        if ($search !== null && $search !== '') { $conditions[] = '(p.name LIKE :search OR p.description LIKE :search)'; $params['search'] = '%' . $search . '%'; }
+        if ($search !== null && $search !== '') { $conditions[] = '(p.name LIKE :search_name OR p.description LIKE :search_description)'; $params['search_name'] = '%' . $search . '%'; $params['search_description'] = '%' . $search . '%'; }
         if ($categoryId !== null) { $conditions[] = 'p.category_id = :category_id'; $params['category_id'] = $categoryId; }
         $order = ['price_asc' => 'p.price ASC', 'price_desc' => 'p.price DESC', 'name' => 'p.name ASC'][$sort] ?? 'p.created_at DESC';
         $statement = $this->pdo->prepare('SELECT p.*, c.name AS category_name, c.slug AS category_slug FROM products p JOIN categories c ON c.id = p.category_id WHERE ' . implode(' AND ', $conditions) . ' ORDER BY ' . $order);

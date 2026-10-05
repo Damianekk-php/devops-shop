@@ -23,6 +23,7 @@ PHP 8.3+, MySQL 8+, PDO, HTML5, CSS3, vanilla JavaScript, Apache z XAMPP. Aplika
 - `templates/` - widoki,
 - `database/` - schema i dane testowe,
 - `storage/logs/` - logi aplikacji.
+- `tests/` - testy jednostkowe i integracyjne PHPUnit.
 
 ## Instalacja w XAMPP
 
@@ -44,6 +45,23 @@ Są to wyłącznie dane lokalne. Zmień je przed użyciem projektu poza środowi
 ## Konfiguracja i bezpieczeństwo
 
 Nie commituj `.env`. Ustaw w nim `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`, `APP_ENV`, `APP_DEBUG` i `APP_URL`. Hasła są przechowywane przez `password_hash()`, a ceny zamówień są ponownie pobierane z bazy w transakcji. Logi nie powinny zawierać haseł ani sekretów.
+
+## Testy
+
+Wymagania testów: PHP z rozszerzeniami `pdo_mysql` i `pdo_sqlite`, Composer oraz uruchomiony MySQL/MariaDB. Testy integracyjne używają wyłącznie bazy o nazwie kończącej się na `_test` (domyślnie `shopstack_test`) i usuwają/odtwarzają tylko tę bazę na początku uruchomienia. Baza `shopstack` nie jest używana przez testy.
+
+```powershell
+composer install
+$env:TEST_DB_HOST = '127.0.0.1'
+$env:TEST_DB_PORT = '3306'
+$env:TEST_DB_DATABASE = 'shopstack_test'
+$env:TEST_DB_USERNAME = 'root'
+$env:TEST_DB_PASSWORD = ''
+.\vendor\bin\phpunit.bat
+composer test:coverage
+```
+
+Testy jednostkowe koszyka i helperów używają izolowanej bazy SQLite in-memory. Testy integracyjne używają MySQL/MariaDB, sprawdzają modele, hashowanie haseł, izolację zamówień, checkout, stock i rollback.
 
 ## Future DevOps roadmap
 

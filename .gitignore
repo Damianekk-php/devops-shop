@@ -1,4 +1,6 @@
 .env
+vendor/
+.phpunit.result.cache
 storage/logs/*.log
 public/uploads/*
 !public/uploads/.gitkeep
